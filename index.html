@@ -36,52 +36,66 @@
         }
         
         /* Navigation */
-        nav {
-            background-color: rgba(26, 26, 46, 0.9);
-            backdrop-filter: blur(10px);
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-            padding: 1.5rem 0;
-            border-bottom: 1px solid var(--gray);
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
-        nav .container {
+        nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 0;
         }
         
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--secondary);
-            text-decoration: none;
+        .logo-container {
+            display: flex;
+            align-items: center;
         }
         
-        .logo span {
+        .logo-img {
+            height: 50px;
+            margin-right: 15px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
             color: var(--primary);
+        }
+        
+        .logo-text span {
+            color: var(--accent);
         }
         
         .nav-links {
             display: flex;
-            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
         }
         
         .nav-links a {
-            color: var(--light);
-            text-decoration: none;
+            color: var(--dark);
             font-weight: 500;
-            transition: color 0.3s;
         }
         
         .nav-links a:hover {
-            color: var(--secondary);
+            color: var(--accent);
         }
         
-        .nav-links a.active {
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
             color: var(--primary);
-            border-bottom: 2px solid var(--primary);
         }
         
         /* Hero Section */
@@ -405,23 +419,30 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav>
-        <div class="container">
-            <a href="#" class="logo">qBridge</a>
-            <div class="nav-links">
-                <a href="#home" class="active">Home</a>
-                <a href="#programs">Programs</a>
-                <a href="#curriculum">Curriculum</a>
+
+    <header>
+            <div class="container">
+                <nav>
+                    <div class="logo-container">
+                        <img src="icon.png"class="logo-img" width="60" length="60">
+                        <div class="logo-text">qBridge</div>
+                    </div>
+                    <button class="mobile-menu-btn">☰</button>
+                    <ul class="nav-links">
+                            <li><a href="#home" class="active">Home</a></li>
+                            <li><a href="#programs">Programs</a></li>
+                            <li><a href="#curriculum">Curriculum</a></li>
+                     </ul>
+                </nav>
             </div>
-        </div>
-    </nav>
+        </header>
 
     <!-- Home Page -->
     <div id="home" class="page" style="display: block;">
         <section class="hero">
             <div class="container">
-                <h1>Bridging Knowledge for Tomorrow's Leaders</h1>
-                <p>Free live courses designed specifically for late middle school and high school students to explore advanced topics, develop critical skills, and prepare for academic success.</p>
+                <h1 style="font-size: 40px;">Welcome to qBridge!</h1>
+                <p>We host free live courses designed specifically for late middle school and high school students to learn about quantum computing.</p>
                 <div>
                     <a href="#programs" class="btn">Explore Programs</a>
                     <a href="#curriculum" class="btn btn-secondary">View Curriculum</a>
@@ -434,19 +455,19 @@
                 <h2 class="section-title">Why Choose QBridge?</h2>
                 <div class="features-grid">
                     <div class="feature-card">
-                        <div class="feature-icon">🎯</div>
-                        <h3>Targeted Learning</h3>
-                        <p>Courses specifically designed for late middle school and high school students to bridge gaps in their education and prepare for advanced studies.</p>
+                        <div class="feature-icon">📖</div>
+                        <h3>Prior Experience</h3>
+                        <p>Our courses are designed for students who have completed Algebra II. All other concepts, such as physics, coding, and linear algebra, will be taught as part of the course</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">💻</div>
+                        <div class="feature-icon">✏️</div>
                         <h3>Live Interactive Sessions</h3>
-                        <p>Real-time classes with expert instructors where you can ask questions and participate in discussions with peers from around the world.</p>
+                        <p>Both our virtual and in-person programs have live sessions, letting students communicate with their instructors as well as their peers.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">💰</div>
                         <h3>Completely Free</h3>
-                        <p>Quality education should be accessible to all. Our programs are completely free with no hidden costs or fees.</p>
+                        <p>All of our programs are completely free, and we offer a certificate of completion to all students who complete our programs!</p>
                     </div>
                 </div>
             </div>
@@ -460,56 +481,21 @@
                 <h2 class="section-title">Our Programs</h2>
                 <div class="program-cards">
                     <div class="program-card">
-                        <div class="program-image" style="background-color: #6c5ce7;">🔬</div>
+                        <div class="program-image" style="background-color: #6c5ce7;">💻</div>
                         <div class="program-content">
-                            <h3>STEM Foundations</h3>
-                            <span class="date">Starting July 15, 2023</span>
-                            <p>A comprehensive introduction to core STEM concepts with hands-on projects in physics, chemistry, and biology.</p>
+                            <h3>Virtual Bootcamp</h3>
+                            <span class="date">Starting August 4, 2025</span>
+                            <p>A beginner friendly introduction to Quantum Computing</p>
                             <a href="#" class="btn" style="margin-top: 1rem;">Learn More</a>
                         </div>
                     </div>
+                    
                     <div class="program-card">
-                        <div class="program-image" style="background-color: #00cec9;">💻</div>
+                        <div class="program-image" style="background-color: #ffeaa7;">✏️</div>
                         <div class="program-content">
-                            <h3>Intro to Coding</h3>
-                            <span class="date">Starting August 1, 2023</span>
-                            <p>Learn Python programming fundamentals through fun projects and problem-solving challenges.</p>
-                            <a href="#" class="btn" style="margin-top: 1rem;">Learn More</a>
-                        </div>
-                    </div>
-                    <div class="program-card">
-                        <div class="program-image" style="background-color: #fd79a8;">📚</div>
-                        <div class="program-content">
-                            <h3>College Prep Workshop</h3>
-                            <span class="date">Starting September 5, 2023</span>
-                            <p>Essential skills for college success: essay writing, time management, and research techniques.</p>
-                            <a href="#" class="btn" style="margin-top: 1rem;">Learn More</a>
-                        </div>
-                    </div>
-                    <div class="program-card">
-                        <div class="program-image" style="background-color: #a29bfe;">🌍</div>
-                        <div class="program-content">
-                            <h3>Global Perspectives</h3>
-                            <span class="date">Starting October 10, 2023</span>
-                            <p>Explore world cultures, current global issues, and develop intercultural communication skills.</p>
-                            <a href="#" class="btn" style="margin-top: 1rem;">Learn More</a>
-                        </div>
-                    </div>
-                    <div class="program-card">
-                        <div class="program-image" style="background-color: #55efc4;">🧠</div>
-                        <div class="program-content">
-                            <h3>Critical Thinking Lab</h3>
-                            <span class="date">Starting November 15, 2023</span>
-                            <p>Develop logical reasoning, problem-solving, and analytical skills through interactive exercises.</p>
-                            <a href="#" class="btn" style="margin-top: 1rem;">Learn More</a>
-                        </div>
-                    </div>
-                    <div class="program-card">
-                        <div class="program-image" style="background-color: #ffeaa7;">🎨</div>
-                        <div class="program-content">
-                            <h3>Creative Expression</h3>
-                            <span class="date">Starting December 1, 2023</span>
-                            <p>Explore creative writing, digital art, and multimedia storytelling techniques.</p>
+                            <h3>In Person Bootcamp</h3>
+                            <span class="date">Starting Fall Break</span>
+                            <p>A beginner friendly introduction to Quantum Computing for students in Reno, Nevada.</p>
                             <a href="#" class="btn" style="margin-top: 1rem;">Learn More</a>
                         </div>
                     </div>
@@ -526,50 +512,48 @@
                 <div class="timeline">
                     <div class="timeline-item left">
                         <div class="timeline-content">
-                            <h3>Week 1-2: Orientation & Foundations</h3>
-                            <p>Program introduction, setting expectations, and establishing foundational knowledge. Introduction to core concepts and tools.</p>
+                            <h3>Units 1-3: Introduction and Mathematical Background</h3>
+                            <p>Introducing quantum computing, explaining relevant topics in linear algebra and complex numbers, bits and qubits</p>
                         </div>
                     </div>
                     <div class="timeline-item right">
                         <div class="timeline-content">
-                            <h3>Week 3-4: Core Concepts</h3>
-                            <p>Deep dive into fundamental principles of the subject area. Interactive lectures and group discussions.</p>
+                            <h3>Unit 4: Coding</h3>
+                            <p>Python libraries used in quantum computing, physical limitations of quantum computers, and practice using Jupyter Notebooks</p>
                         </div>
                     </div>
                     <div class="timeline-item left">
                         <div class="timeline-content">
-                            <h3>Week 5-6: Applied Learning</h3>
-                            <p>Hands-on projects and case studies. Students begin applying concepts to real-world scenarios.</p>
+                            <h3>Units 5-6: Algorithms</h3>
+                            <p>Understanding Shor's and Grover's algorithms, current methods of cryptography, and the importance of quantum computing in the next decade</p>
                         </div>
                     </div>
                     <div class="timeline-item right">
                         <div class="timeline-content">
-                            <h3>Week 7-8: Advanced Topics</h3>
-                            <p>Exploration of more complex material with guest lectures from field experts.</p>
+                            <h3>Units 7-8: Quantum Circuits</h3>
+                            <p>Constructing circuits with qubits, simulating quantum computers, using algorithms to solve problems</p>
                         </div>
                     </div>
                     <div class="timeline-item left">
                         <div class="timeline-content">
-                            <h3>Week 9: Capstone Preparation</h3>
-                            <p>Students begin work on final projects with instructor guidance and peer collaboration.</p>
+                            <h3>Unit 9: Project</h3>
+                            <p>Students will use the information learned throughout the course to create a project showcasing their knowledge</p>
                         </div>
                     </div>
                     <div class="timeline-item right">
                         <div class="timeline-content">
-                            <h3>Week 10: Presentations & Graduation</h3>
-                            <p>Final project presentations, feedback sessions, and program completion celebration.</p>
+                            <h3>Unit 10: Wrap Up</h3>
+                            <p>Discussing the future of quantum computing, handing out certificates of completion to students done with the course, feedback sessions</p>
                         </div>
                     </div>
                 </div>
                 
                 <div style="margin-top: 4rem; background-color: rgba(255,255,255,0.05); padding: 2rem; border-radius: 10px; border-left: 4px solid var(--primary);">
-                    <h3 style="color: var(--secondary); margin-bottom: 1rem;">Program Structure Details</h3>
+                    <h3 style="color: var(--secondary); margin-bottom: 1rem;">Virtual Program Structure Details</h3>
                     <ul style="list-style-type: none;">
-                        <li style="margin-bottom: 0.5rem;">📅 <strong>Duration:</strong> 10 weeks per program</li>
-                        <li style="margin-bottom: 0.5rem;">⏱️ <strong>Time Commitment:</strong> 4-6 hours per week (2 live sessions + independent work)</li>
-                        <li style="margin-bottom: 0.5rem;">👥 <strong>Class Size:</strong> Limited to 25 students per cohort for personalized attention</li>
+                        <li style="margin-bottom: 0.5rem;">📅 <strong>Duration:</strong> One unit every day, August 4th - 15th</li>
+                        <li style="margin-bottom: 0.5rem;">⏱️ <strong>Time Commitment:</strong> 8 hours a week (5 live sessions + independent work)</li>
                         <li style="margin-bottom: 0.5rem;">🏆 <strong>Certification:</strong> Digital certificate upon successful completion</li>
-                        <li style="margin-bottom: 0.5rem;">🤝 <strong>Community:</strong> Access to alumni network and mentorship opportunities</li>
                     </ul>
                 </div>
             </div>
@@ -579,7 +563,7 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <a href="#" class="logo">q<span>Bridge</span></a>
+            <a href="#" class="logo">qBridge</a>
             <div class="footer-links">
                 <a href="#home">Home</a>
                 <a href="#programs">Programs</a>
@@ -588,14 +572,6 @@
                 <a href="#">Contact</a>
                 <a href="#">FAQ</a>
             </div>
-            <div class="social-links">
-                <a href="#">📱</a>
-                <a href="#">📘</a>
-                <a href="#">📸</a>
-                <a href="#">🐦</a>
-                <a href="#">🎥</a>
-            </div>
-            <p class="copyright">© 2023 QBridge. All rights reserved.</p>
         </div>
     </footer>
 
