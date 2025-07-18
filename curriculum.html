@@ -4,34 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curriculum - QBridge</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-        <!-- Banner -->
+    <!-- Banner -->
     <div class="banner">
-        Registration is OPEN for our virtual Quantum Computing Camp! <a href="https://forms.gle/LnvPcGNthkzbXRv88" class="banner-link">Register now</a>
+        🚀 Registration is OPEN for all QBridge programs! <a href="https://forms.gle/Hhrub9E8ozLB49LWA" class="banner-link">Register now</a>
     </div>
     <!-- Navigation -->
     <header>
         <div class="container">
             <nav>
                 <div class="logo-container">
-                    <img src="icon.png" class="logo-img" width="60" height="80">
-                    <div class="logo-text">qBridge</div>
+                    <a href="index.html" class="logo-link">
+                        <img src="icon.png" class="logo-img" width="44" height="44">
+                        <div class="logo-text">qBridge</div>
+                    </a>
                 </div>
-                <button class="mobile-menu-btn">☰</button>
                 <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
+                    <li class="dropdown">
+                        <a href="index.html" class="inactive id="homeDropdownBtn">Homepage <span class="dropdown-arrow">&#9662;</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="index.html#home" class="scroll-link">Home</a></li>
+                            <li><a href="index.html#about" class="scroll-link">About Us</a></li>
+                            <li><a href="index.html#faq" class="scroll-link">FAQ</a></li>
+                            <li><a href="index.html#contact" class="scroll-link">Contact</a></li>
+                        </ul>
+                    </li>
                     <li><a href="programs.html">Programs</a></li>
                     <li><a href="curriculum.html" class="active">Curriculum</a></li>
-
                 </ul>
             </nav>
         </div>
     </header>
 
     <!-- Curriculum Page -->
-    <div id="curriculum" class="page" style="display: block;">
+    <main id="curriculum" class="page" style="display: block;">
         <section class="curriculum">
             <div class="container">
                 <h2 class="section-title">Curriculum Outline</h2>
@@ -73,30 +83,54 @@
                         </div>
                     </div>
                 </div>
-                
-                <div style="margin-top: 4rem; background-color: rgba(255,255,255,0.05); padding: 2rem; border-radius: 10px; border-left: 4px solid var(--primary);">
-                    <h3 style="color: var(--secondary); margin-bottom: 1rem;">Virtual Program Structure Details</h3>
-                    <ul style="list-style-type: none;">
-                        <li style="margin-bottom: 0.5rem;">📅 <strong>Duration:</strong> One unit every day, August 4th - 15th</li>
-                        <li style="margin-bottom: 0.5rem;">⏱️ <strong>Time Commitment:</strong> 8 hours a week (5 live sessions + independent work)</li>
-                        <li style="margin-bottom: 0.5rem;">🏆 <strong>Certification:</strong> Digital certificate upon successful completion</li>
+                <div class="curriculum-details-box">
+                    <h3>Virtual Program Structure Details</h3>
+                    <ul>
+                        <li>📅 <strong>Duration:</strong> One unit every day, August 4th - 15th</li>
+                        <li>⏱️ <strong>Time Commitment:</strong> 8 hours a week (5 live sessions + independent work)</li>
+                        <li>🏆 <strong>Certification:</strong> Digital certificate upon successful completion</li>
                     </ul>
                 </div>
             </div>
         </section>
-    </div>
+    </main>
 
     <!-- Footer -->
     <footer>
         <div class="container">
-            <a href="index.html" class="logo">qBridge</a>
+            <a href="index.html" class="logo footer">qBridge</a>
             <div class="footer-links">
-                <a href="index.html">Home</a>
+                <a href="index.html#home" class="scroll-link">Home</a>
                 <a href="programs.html">Programs</a>
                 <a href="curriculum.html">Curriculum</a>
-
             </div>
         </div>
     </footer>
+    <script>
+        // Dropdown menu functionality
+        document.querySelector('.dropdown').addEventListener('mouseenter', function() {
+            this.querySelector('.dropdown-menu').style.display = 'block';
+        });
+        document.querySelector('.dropdown').addEventListener('mouseleave', function() {
+            this.querySelector('.dropdown-menu').style.display = '';
+        });
+
+        // Smooth scroll for scroll-links
+        document.querySelectorAll('.scroll-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // For other pages, allow default navigation
+                if (!this.getAttribute('href').startsWith('#')) return;
+                e.preventDefault();
+                const targetId = this.getAttribute('href').replace(/^#/, '');
+                const target = document.getElementById(targetId);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

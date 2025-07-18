@@ -4,37 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QBridge - Free Live Courses for Students</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Banner -->
     <div class="banner">
-        Registration is OPEN for our virtual Quantum Computing Camp! <a href="https://forms.gle/LnvPcGNthkzbXRv88" class="banner-link">Register now</a>
+        🚀 Registration is OPEN for all QBridge programs! <a href="https://forms.gle/Hhrub9E8ozLB49LWA" class="banner-link">Register now</a>
     </div>
     <!-- Navigation -->
     <header>
         <div class="container">
             <nav>
                 <div class="logo-container">
-                    <img src="icon.png" class="logo-img" width="60" height="60">
-                    <div class="logo-text">qBridge</div>
+                    <a href="index.html" class="logo-link">
+                        <img src="icon.png" class="logo-img" width="44" height="44">
+                        <div class="logo-text">qBridge</div>
+                    </a>
                 </div>
-                <button class="mobile-menu-btn">☰</button>
                 <ul class="nav-links">
-                    <li><a href="index.html" class="active">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#home" class="active" id="homeDropdownBtn">Homepage <span class="dropdown-arrow">&#9662;</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#home" class="scroll-link">Home</a></li>
+                            <li><a href="#about" class="scroll-link">About Us</a></li>
+                            <li><a href="#faq" class="scroll-link">FAQ</a></li>
+                            <li><a href="#contact" class="scroll-link">Contact</a></li>
+                        </ul>
+                    </li>
                     <li><a href="programs.html">Programs</a></li>
                     <li><a href="curriculum.html">Curriculum</a></li>
-
                 </ul>
             </nav>
         </div>
     </header>
 
     <!-- Home Page -->
-    <div id="home" class="page" style="display: block;">
-        <section class="hero">
+    <main id="home" class="page" style="display: block;">
+        <section class="hero" id="about">
             <div class="container">
-                <h1 style="font-size: 40px;">Welcome to qBridge!</h1>
+                <h1>Welcome to qBridge!</h1>
                 <p>We host free live courses designed specifically for late middle school and high school students to learn about quantum computing.</p>
                 <div>
                     <a href="programs.html" class="btn">Explore Programs</a>
@@ -43,31 +53,47 @@
             </div>
         </section>
 
-        <section class="features">
+        <!-- About Us Section -->
+        <section class="about-section" id="about">
+            <div class="container">
+                <h2 class="section-title">About Us</h2>
+                <p style="text-align: center;">
+                qBridge makes quantum computing accessible to late middle and early high school students through free, beginner-friendly camps. Only requiring an Algebra II background, our live virtual sessions teach the physics, mathematics, and coding at the heart of quantum computing. From learning algorithms which can be used to break the most powerful of today's encryption codes to the physics behind Schrödinger's cat, students will gain a practical understanding of quantum computing. 
+                </p>
+            </div>
+        </section>
+
+        <section class="features" id="features">
             <div class="container">
                 <h2 class="section-title">Why Choose QBridge?</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">📖</div>
-                        <h3>Prior Experience</h3>
-                        <p>Our courses are designed for students who have completed Algebra II. All other concepts, such as physics, coding, and linear algebra, will be taught as part of the course.</p>
+                <div class="features-grid custom-cards-grid">
+                    <div class="card">
+                        <div class="card2">
+                            <div class="feature-icon">📖</div>
+                            <h3>Prior Experience</h3>
+                            <p>Our courses are designed for students who have completed Algebra II. All other concepts, such as physics, coding, and linear algebra, will be taught as part of the course.</p>
+                        </div>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">✏️</div>
-                        <h3>Live Interactive Sessions</h3>
-                        <p>Both our virtual and in-person programs have live sessions, letting students communicate with their instructors as well as their peers.</p>
+                    <div class="card">
+                        <div class="card2">
+                            <div class="feature-icon">✏️</div>
+                            <h3>Live Interactive Sessions</h3>
+                            <p>Our programs have live sessions, letting students communicate with their instructors as well as their peers.</p>
+                        </div>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">💰</div>
-                        <h3>Completely Free</h3>
-                        <p>All of our programs are completely free, and we offer a certificate of completion to all students who complete our programs!</p>
+                    <div class="card">
+                        <div class="card2">
+                            <div class="feature-icon">💰</div>
+                            <h3>Completely Free</h3>
+                            <p>All of our programs are completely free, and we offer a certificate of completion to all students who complete our programs!</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- FAQ Section -->
-        <section class="faq">
+        <section class="faq" id="faq">
             <div class="container">
                 <h2 class="section-title">Frequently Asked Questions</h2>
                 <div class="faq-list">
@@ -89,25 +115,80 @@
                     </div>
                     <div class="faq-item">
                         <h3>How do I register?</h3>
-                        <p>Simply go to the <a href="https://forms.gle/LnvPcGNthkzbXRv88">registration page</a> and fill out the form to sign up.</p>
+                        <p>Simply go to the <a href="register.html">registration page</a> and fill out the form to sign up.</p>
                     </div>
                 </div>
             </div>
         </section>
-    </div>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="container">
+                <h2 class="section-title">Contact Us</h2>
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label for="contact-name">Name</label>
+                        <input type="text" id="contact-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email">Email</label>
+                        <input type="email" id="contact-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-message">Message</label>
+                        <textarea id="contact-message" name="message" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                    <div id="contact-success" style="display:none; color: var(--secondary); margin-top: 1rem;">
+                        Thank you for contacting us!
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer>
         <div class="container">
-            <a href="index.html" class="logo">qBridge</a>
+            <a href="index.html" class="logo footer">qBridge</a>
             <div class="footer-links">
-                <a href="index.html">Home</a>
+                <a href="index.html#home" class="scroll-link">Home</a>
                 <a href="programs.html">Programs</a>
                 <a href="curriculum.html">Curriculum</a>
-
             </div>
         </div>
     </footer>
 
+    <script>
+        // Contact form simulation
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('contact-success').style.display = 'block';
+            this.reset();
+        });
+
+        // Dropdown menu functionality
+        document.querySelector('.dropdown').addEventListener('mouseenter', function() {
+            this.querySelector('.dropdown-menu').style.display = 'block';
+        });
+        document.querySelector('.dropdown').addEventListener('mouseleave', function() {
+            this.querySelector('.dropdown-menu').style.display = '';
+        });
+
+        // Smooth scroll for scroll-links
+        document.querySelectorAll('.scroll-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').replace(/^#/, '');
+                const target = document.getElementById(targetId);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

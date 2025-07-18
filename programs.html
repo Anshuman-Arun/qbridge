@@ -4,23 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Programs - QBridge</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Banner -->
+    <div class="banner">
+        🚀 Registration is OPEN for all QBridge programs! <a href="register.html" class="banner-link">Register now</a>
+    </div>
     <!-- Navigation -->
     <header>
-        <div class="banner">
-            Registration is OPEN for our virtual Quantum Computing Camp! <a href="https://forms.gle/LnvPcGNthkzbXRv88" class="banner-link">Register now</a>
-        </div>
         <div class="container">
             <nav>
                 <div class="logo-container">
-                    <img src="icon.png" class="logo-img" width="60" height="60">
-                    <div class="logo-text">qBridge</div>
+                    <a href="index.html" class="logo-link">
+                        <img src="icon.png" class="logo-img" width="44" height="44">
+                        <div class="logo-text">qBridge</div>
+                    </a>
                 </div>
-                <button class="mobile-menu-btn">☰</button>
                 <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
+                    <li class="dropdown">
+                        <a href="index.html" class="inactive" id="homeDropdownBtn">Homepage <span class="dropdown-arrow">&#9662;</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="index.html#home" class="scroll-link">Home</a></li>
+                            <li><a href="index.html#about" class="scroll-link">About Us</a></li>
+                            <li><a href="index.html#faq" class="scroll-link">FAQ</a></li>
+                            <li><a href="index.html#contact" class="scroll-link">Contact</a></li>
+                        </ul>
+                    </li>
                     <li><a href="programs.html" class="active">Programs</a></li>
                     <li><a href="curriculum.html">Curriculum</a></li>
                 </ul>
@@ -29,45 +41,64 @@
     </header>
 
     <!-- Programs Page -->
-    <div id="programs" class="page" style="display: block;">
+    <main id="programs" class="page" style="display: block;">
         <section class="programs">
             <div class="container">
                 <h2 class="section-title">Our Programs</h2>
-                <div class="program-cards">
-                    <div class="program-card">
-                        <div class="program-image" style="background-color: #6c5ce7;">💻</div>
-                        <div class="program-content">
+                <div class="program-cards modern-programs-grid">
+                    <div class="card">
+                        <div class="card2">
+                            <div class="feature-icon">💻</div>
                             <h3>Virtual Bootcamp</h3>
                             <span class="date">Starting August 4, 2025</span>
-                            <p>A beginner friendly introduction to Quantum Computing</p>
-                            <a href="#" class="btn" style="margin-top: 1rem;">Learn More</a>
+                            <p>A beginner-friendly introduction to Quantum Computing.</p>
+                            <a href="curriculum.html" class="btn" style="margin-top: 1rem;">Learn More</a>
                         </div>
                     </div>
                     
-                    <div class="program-card">
-                        <div class="program-image" style="background-color: #ffeaa7;">✏️</div>
-                        <div class="program-content">
-                            <h3>In Person Bootcamp</h3>
-                            <span class="date">Starting Fall Break</span>
-                            <p>A beginner friendly introduction to Quantum Computing for students in Reno, Nevada.</p>
-                            <a href="#" class="btn" style="margin-top: 1rem;">Learn More</a>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </section>
-    </div>
+    </main>
 
     <!-- Footer -->
     <footer>
         <div class="container">
-            <a href="index.html" class="logo">qBridge</a>
+            <a href="index.html" class="logo footer">qBridge</a>
             <div class="footer-links">
-                <a href="index.html">Home</a>
+                <a href="index.html#home" class="scroll-link">Home</a>
                 <a href="programs.html">Programs</a>
                 <a href="curriculum.html">Curriculum</a>
             </div>
         </div>
     </footer>
+    
+    <script>
+        // Dropdown menu functionality
+        document.querySelector('.dropdown').addEventListener('mouseenter', function() {
+            this.querySelector('.dropdown-menu').style.display = 'block';
+        });
+        document.querySelector('.dropdown').addEventListener('mouseleave', function() {
+            this.querySelector('.dropdown-menu').style.display = '';
+        });
+
+        // Smooth scroll for scroll-links
+        document.querySelectorAll('.scroll-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // For other pages, allow default navigation
+                if (!this.getAttribute('href').startsWith('#')) return;
+                e.preventDefault();
+                const targetId = this.getAttribute('href').replace(/^#/, '');
+                const target = document.getElementById(targetId);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
