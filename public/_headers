@@ -1,0 +1,10 @@
+# Cloudflare Pages _headers file
+# These rules are applied at the CDN edge for every response.
+# HSTS is set here (not in Next.js) because Cloudflare terminates TLS.
+
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
