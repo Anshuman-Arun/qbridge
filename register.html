@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - QBridge</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo-container">
+                    <img src="icon.png" class="logo-img" width="60" height="60">
+                    <div class="logo-text">qBridge</div>
+                </div>
+                <button class="mobile-menu-btn">☰</button>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="programs.html">Programs</a></li>
+                    <li><a href="curriculum.html">Curriculum</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html" class="active">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Registration Page -->
+    <section class="register">
+        <div class="container">
+            <h2 class="section-title">Register</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Full Name</label>
+                    <input type="text" id="register-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" name="password" required>
+                </div>
+                <button type="submit" class="btn">Register</button>
+                <div id="register-success" style="display:none; color: var(--secondary); margin-top: 1rem;">
+                    Registration successful! (Simulated)
+                </div>
+                <div style="margin-top: 1rem;">
+                    Already have an account? <a href="login.html">Login</a>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <a href="index.html" class="logo">qBridge</a>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="programs.html">Programs</a>
+                <a href="curriculum.html">Curriculum</a>
+                <a href="faq.html">FAQ</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Registration form simulation
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('register-success').style.display = 'block';
+            this.reset();
+        });
+    </script>
+</body>
+</html>
