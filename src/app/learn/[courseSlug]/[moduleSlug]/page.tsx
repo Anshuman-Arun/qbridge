@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, Lock } from 'lucide-react';
 import Link from 'next/link';
 import { lessonRegistry } from '@/components/content/registry';
-import { LessonQuizSection } from '../../../../components/learn/LessonQuizSection';
+import { LessonPageClient } from '../../../../components/learn/LessonPageClient';
 
 interface PageProps {
     params: Promise<{
@@ -13,6 +13,7 @@ interface PageProps {
 }
 
 export default async function LessonPage({ params }: PageProps) {
+    const DEV_UNLOCK_ALL = false; // DEV TOGGLE: Set to false before pushing to production
     const { courseSlug, moduleSlug } = await params;
     const supabase = await createClient();
 
@@ -82,9 +83,19 @@ export default async function LessonPage({ params }: PageProps) {
                 {/* Header */}
                 <div className="space-y-4 border-b border-white/10 pb-8">
                     <div className="flex items-center gap-3 text-brand-purple text-sm font-mono uppercase tracking-wider">
-                        <span>{moduleData.course.title}</span>
-                        <span>/</span>
-                        <span>Lesson {moduleData.order_index}</span>
+                        <Link
+                            href={`/learn/${courseSlug}`}
+                            className="hover:text-white transition-colors"
+                        >
+                            {moduleData.course.title}
+                        </Link>
+                        <span className="opacity-40">/</span>
+                        <Link
+                            href={`/learn/${courseSlug}`}
+                            className="hover:text-white transition-colors"
+                        >
+                            Lesson {moduleData.order_index}
+                        </Link>
                     </div>
                     <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
                         {moduleData.title}
@@ -116,22 +127,22 @@ export default async function LessonPage({ params }: PageProps) {
                     })()}
                 </div>
 
-                {/* Lesson Quiz Section */}
+                {/* Lesson Quiz — min time gate */}
                 {quizQuestions && quizQuestions.length > 0 && (
-                    <div className="border-t border-white/10 pt-12">
-                        <LessonQuizSection
-                            questions={quizQuestions.map(q => ({
-                                id: q.id,
-                                type: q.question_type,
-                                questionText: q.question_text,
-                                options: q.options,
-                                correctAnswer: q.correct_answer,
-                                tags: q.tags || [],
-                                points: q.points,
-                            }))}
-                            moduleId={moduleData.id}
-                        />
-                    </div>
+                    <LessonPageClient
+                        questions={quizQuestions.map(q => ({
+                            id: q.id,
+                            type: q.question_type as 'multiple_choice' | 'short_answer' | 'true_false' | 'python_output' | 'graph_vector',
+                            questionText: q.question_text,
+                            options: q.options,
+                            correctAnswer: q.correct_answer,
+                            tags: q.tags || [],
+                            points: q.points,
+                        }))}
+                        moduleId={moduleData.id}
+                        courseSlug={courseSlug}
+                        devUnlockAll={DEV_UNLOCK_ALL}
+                    />
                 )}
 
                 {/* Navigation Footer */}

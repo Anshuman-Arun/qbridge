@@ -16,10 +16,8 @@ import BigOLesson from './programming/BigOLesson';
 // Physics
 import WaveParticleDualityLesson from './physics/WaveParticleDualityLesson';
 import DoubleSlitLesson from './physics/DoubleSlitLesson';
-import EntanglementSuperposition1Lesson from './physics/EntanglementSuperposition1Lesson';
-import EntanglementSuperposition2Lesson from './physics/EntanglementSuperposition2Lesson';
-import Implications1Lesson from './physics/Implications1Lesson';
-import Implications2Lesson from './physics/Implications2Lesson';
+import MeasurementDecoherenceLesson from './physics/MeasurementDecoherenceLesson';
+import QuantumEntanglementLesson from './physics/QuantumEntanglementLesson';
 
 // Quantum Computing
 import QubitsLesson from './quantum-computing/QubitsLesson';
@@ -50,10 +48,8 @@ export const lessonRegistry: Record<string, React.ComponentType<any>> = {
     // Physics
     'wave-particle-duality': WaveParticleDualityLesson,
     'double-slit': DoubleSlitLesson,
-    'ent-sup-1': EntanglementSuperposition1Lesson,
-    'ent-sup-2': EntanglementSuperposition2Lesson,
-    'implications-1': Implications1Lesson,
-    'implications-2': Implications2Lesson,
+    'measurement-and-decoherence': MeasurementDecoherenceLesson,
+    'quantum-entanglement': QuantumEntanglementLesson,
 
     // Quantum Computing
     'qubits': QubitsLesson,

@@ -5,6 +5,8 @@ import { InteractiveVideo, VideoCheckpoint } from '@/components/features/Interac
 import { TensorExpansionCalculator } from '@/components/features/TensorExpansionCalculator';
 import { KroneckerBlockVisualizer } from '@/components/features/KroneckerBlockVisualizer';
 import { ConceptNugget } from '@/components/features/ConceptNugget';
+import { LatexBlock } from '@/components/features/LatexBlock';
+import { MathText } from '@/components/features/MathText';
 
 export default function TensorProductsLesson() {
     const checkpoints: VideoCheckpoint[] = [
@@ -13,62 +15,108 @@ export default function TensorProductsLesson() {
             timeSeconds: 61,
             questionText: 'Which mathematical symbol is most commonly used to represent a tensor product?',
             options: [
-                'A dot ($\\cdot$)',
-                'A cross ($\\times$)',
-                'A circle with an X inside ($\\otimes$)',
-                'An asterisk ($\\ast$)'
+                String.raw`A dot ($\cdot$)`,
+                String.raw`A cross ($\times$)`,
+                String.raw`A circle with an X inside ($\otimes$)`,
+                String.raw`An asterisk ($\ast$)`
             ],
-            correctAnswer: 'A circle with an X inside ($\\otimes$)'
+            correctAnswer: String.raw`A circle with an X inside ($\otimes$)`
         },
         {
             id: 'tp_2',
             timeSeconds: 158,
-            questionText: 'If Vector $A$ is $M$-dimensional and Vector $B$ is $N$-dimensional, what is the dimension of $A \\otimes B$?',
-            options: ['$M+N$', '$M^{N}$', '$M \\times N$', '$2^{M \times N}$'],
-            correctAnswer: '$M \\times N$'
+            questionText: String.raw`If Vector $A$ is $M$-dimensional and Vector $B$ is $N$-dimensional, what is the dimension of $A \otimes B$?`,
+            options: [String.raw`$M+N$`, String.raw`$M^{N}$`, String.raw`$M \times N$`, String.raw`$2^{M \times N}$`],
+            correctAnswer: String.raw`$M \times N$`
         }
     ];
 
     return (
-        <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
+            {/* Header */}
             <div className="prose prose-invert max-w-none">
-                <p className="text-gray-300 text-lg leading-relaxed">
-                    This page focuses on tensor products as a way to combine independent systems into one mathematical object. Use the tools below to verify the pattern mechanically.
-                </p>
+                <h1 className="text-4xl font-bold text-white mb-4">Tensor Products: Combining Systems</h1>
+                <MathText
+                    className="text-gray-300 text-lg leading-relaxed block mb-6"
+                    text={String.raw`When two independent systems interact in quantum mechanics, their combined state space is not a simple sum — it is a <strong>tensor product</strong>, denoted $\otimes$. This operation is responsible for the exponential growth of quantum state spaces, making multi-qubit systems extraordinarily powerful.`}
+                />
             </div>
 
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-                <h3 className="text-lg font-semibold text-white mb-3">What tensor products do</h3>
-                <ul className="list-disc pl-5 space-y-2 text-sm text-gray-300">
-                    <li>If system A has dimension <code>M</code> and system B has dimension <code>N</code>, then <code>A tensor B</code> has dimension <code>M x N</code>.</li>
-                    <li>Order matters in general: <code>A tensor B</code> and <code>B tensor A</code> are not the same arrangement.</li>
-                    <li>The same construction applies to matrices (Kronecker product).</li>
-                </ul>
+            {/* Video */}
+            <div className="space-y-6">
+                <InteractiveVideo url="https://www.youtube.com/watch?v=UgAhUtHPa9c" checkpoints={checkpoints} />
             </div>
 
-            <InteractiveVideo
-                url="https://www.youtube.com/watch?v=Fj2M0y4Oebs"
-                checkpoints={checkpoints}
-            />
-
-            <div className="prose prose-invert max-w-none">
-                <h3 className="text-2xl font-bold text-white mt-12 mb-6">Vector tensor expansion</h3>
-                <p className="text-gray-400 mb-8">
-                    Multiply each entry of the first vector by the full second vector, then stack the resulting blocks. Try several examples to confirm the output size and order.
-                </p>
+            {/* What it does card */}
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-10 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-brand-purple/5 rounded-full blur-3xl -mr-32 -mt-32" />
+                <div className="relative z-10">
+                    <h3 className="text-2xl font-bold text-white mb-6">What Tensor Products Do</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div className="space-y-5">
+                            {[
+                                { label: 'Dimension rule', text: String.raw`If system A is $M$-dimensional and B is $N$-dimensional, $A \otimes B$ is $M \times N$-dimensional.` },
+                                { label: 'Order matters', text: String.raw`$A \otimes B \neq B \otimes A$ in general — the arrangement changes.` },
+                                { label: 'Matrices too', text: 'The same rule applies to matrices: the Kronecker product.' },
+                            ].map(({ label, text }) => (
+                                <div key={label} className="flex items-start gap-4">
+                                    <div className="h-2 w-2 rounded-full bg-brand-purple mt-2 shrink-0" />
+                                    <MathText className="text-gray-400 text-sm" text={`<strong>${label}:</strong> ${text}`} />
+                                </div>
+                            ))}
+                        </div>
+                        <div className="bg-black/30 p-8 rounded-2xl border border-white/5 backdrop-blur-sm">
+                            <LatexBlock
+                                displayMode
+                                expression="\begin{bmatrix} a \\ b \end{bmatrix} \otimes \begin{bmatrix} c \\ d \end{bmatrix} = \begin{bmatrix} ac \\ ad \\ bc \\ bd \end{bmatrix}"
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <TensorExpansionCalculator />
+            <ConceptNugget text="Tensor products are the bookkeeping tool that makes multi-qubit state spaces possible — 10 qubits gives a 1024-dimensional state space via repeated tensor products." />
 
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-8 mt-12">
-                <h3 className="text-xl font-bold text-white mb-4">Matrix Kronecker product</h3>
-                <p className="text-gray-400 mb-6 text-sm leading-relaxed">
-                    For matrices, each entry of matrix A scales an entire copy of matrix B. The result is a larger block matrix that preserves this repeated structure.
-                </p>
-                <KroneckerBlockVisualizer />
+            {/* Expansion calculator */}
+            <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl p-10 shadow-2xl">
+                <div className="space-y-8">
+                    <div className="max-w-3xl">
+                        <h3 className="text-2xl font-bold text-white mb-4">Vector Tensor Expansion</h3>
+                        <MathText
+                            className="text-gray-400 text-lg leading-relaxed"
+                            text={String.raw`Multiply each entry of the first vector by the full second vector, then stack the resulting blocks. Try several examples to confirm the output size and order.`}
+                        />
+                    </div>
+                    <TensorExpansionCalculator />
+                </div>
             </div>
 
-            <ConceptNugget text="Tensor products are the bookkeeping tool that makes multi-qubit state spaces possible." />
+            {/* Kronecker product */}
+            <div className="bg-gradient-to-br from-brand-purple/20 via-brand-purple/5 to-transparent border border-white/10 rounded-3xl p-12 shadow-2xl">
+                <h2 className="text-3xl font-bold text-white mb-10 text-center tracking-tight">Matrix Kronecker Product</h2>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    <div className="space-y-8">
+                        <div className="relative">
+                            <div className="absolute -left-6 top-0 bottom-0 w-1 bg-brand-purple rounded-full" />
+                            <MathText
+                                className="text-gray-300 text-lg block"
+                                text={String.raw`For matrices, each entry of matrix $A$ scales an entire copy of matrix $B$. The result is a larger <strong>block matrix</strong> that preserves this repeated structure — exactly how multi-qubit gates are constructed from single-qubit ones.`}
+                            />
+                        </div>
+                        <div className="bg-white/5 p-8 rounded-2xl border border-white/10">
+                            <LatexBlock
+                                displayMode
+                                expression="A \otimes B = \begin{bmatrix} a_{11}B & a_{12}B \\ a_{21}B & a_{22}B \end{bmatrix}"
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <KroneckerBlockVisualizer />
+                    </div>
+                </div>
+            </div>
+
+            <ConceptNugget text="Every multi-qubit quantum circuit is built from tensor products of single-qubit gates — the same operation you just computed manually." />
         </div>
     );
 }

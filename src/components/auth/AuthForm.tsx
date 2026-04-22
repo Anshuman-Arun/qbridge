@@ -9,9 +9,10 @@ import { useRouter } from 'next/navigation';
 
 interface AuthFormProps {
     type: 'login' | 'signup';
+    redirectTo?: string;
 }
 
-export function AuthForm({ type }: AuthFormProps) {
+export function AuthForm({ type, redirectTo = '/learn' }: AuthFormProps) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
@@ -62,7 +63,7 @@ export function AuthForm({ type }: AuthFormProps) {
                     password,
                 });
                 if (error) throw error;
-                window.location.href = '/learn';
+                window.location.href = redirectTo;
             }
         } catch (err: any) {
             setError(err.message);
@@ -103,7 +104,7 @@ export function AuthForm({ type }: AuthFormProps) {
                                     name="fullName"
                                     type="text"
                                     required
-                                    placeholder="Alice Quantum"
+                                    placeholder="John Quantum"
                                     className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 transition-all font-mono text-sm"
                                 />
                             </div>
@@ -118,7 +119,7 @@ export function AuthForm({ type }: AuthFormProps) {
                                 name="email"
                                 type="email"
                                 required
-                                placeholder="alice@qbridge.com"
+                                placeholder="ilovequantum@qbridge.com"
                                 className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 transition-all font-mono text-sm"
                             />
                         </div>

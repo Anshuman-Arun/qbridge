@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import { CheckCircle } from 'lucide-react';
+import { MathText } from '@/components/features/MathText';
 
 interface ConceptNuggetProps {
     text: string;
@@ -15,9 +14,10 @@ export function ConceptNugget({ text, className = "" }: ConceptNuggetProps) {
             <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-brand-cyan to-brand-purple opacity-50 group-hover:opacity-100 transition-opacity" />
             
             <div className="relative z-10">
-                <p className="text-gray-200 font-medium leading-relaxed tracking-wide">
-                    {text}
-                </p>
+                <MathText 
+                    className="text-gray-200 font-medium leading-relaxed tracking-wide block"
+                    text={text}
+                />
                 <div className="mt-3 flex items-center gap-2">
                     <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent" />
                     <span className="text-[10px] uppercase tracking-[0.2em] text-white/30 font-bold italic">Key Takeaway</span>

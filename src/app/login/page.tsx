@@ -1,6 +1,9 @@
 import { AuthForm } from '@/components/auth/AuthForm';
 
-export default function LoginPage() {
+export default async function LoginPage({ searchParams }: { searchParams: Promise<{ from?: string }> }) {
+    const { from } = await searchParams;
+    const redirectTo = from || '/learn';
+
     return (
         <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4 relative overflow-hidden">
             {/* Background elements to match the theme */}
@@ -10,7 +13,7 @@ export default function LoginPage() {
             </div>
 
             <div className="relative z-10 w-full flex justify-center">
-                <AuthForm type="login" />
+                <AuthForm type="login" redirectTo={redirectTo} />
             </div>
         </div>
     );

@@ -40,6 +40,15 @@ export default async function ProfilePage() {
         `)
         .order('created_at', { ascending: true });
 
+    // Check if user enrolled in Advanced QC
+    const { data: advancedEnrollment } = await supabase
+        .from('course_interest')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('course_slug', 'advanced-quantum-computing')
+        .maybeSingle();
+    const enrolledAdvanced = !!advancedEnrollment;
+
     const attempts = (quizAttempts || []) as unknown as Array<{
         score: number;
         max_score: number;
@@ -178,6 +187,7 @@ export default async function ProfilePage() {
             tags={tags}
             recentAttempts={recentAttempts}
             historyAttempts={historyAttempts}
+            enrolledAdvanced={enrolledAdvanced}
         />
     );
 }

@@ -187,3 +187,5 @@ This is a private project. For questions, reach out via [Instagram](https://www.
 ## AI Agent Context
 
 If you are an AI agent working on this codebase, read `AI_CONTEXT.md` first. It contains the absolute standards for lesson design, database seeding conventions, and UI/UX requirements.
+
+plug

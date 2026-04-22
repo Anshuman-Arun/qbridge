@@ -7,47 +7,59 @@ import { motion, AnimatePresence } from 'framer-motion';
 export function KroneckerBlockVisualizer() {
     const [isExpanded, setIsExpanded] = useState(false);
     
-    const [a00, setA00] = useState(1);
-    const [a01, setA01] = useState(2);
-    const [a10, setA10] = useState(3);
-    const [a11, setA11] = useState(4);
+    const [a00, setA00] = useState<string>("1");
+    const [a01, setA01] = useState<string>("2");
+    const [a10, setA10] = useState<string>("3");
+    const [a11, setA11] = useState<string>("4");
 
-    const [b00, setB00] = useState(0);
-    const [b01, setB01] = useState(1);
-    const [b10, setB10] = useState(1);
-    const [b11, setB11] = useState(0);
+    const [b00, setB00] = useState<string>("0");
+    const [b01, setB01] = useState<string>("1");
+    const [b10, setB10] = useState<string>("1");
+    const [b11, setB11] = useState<string>("0");
 
-    const InputCell = ({ value, setter, colorClass, disabled }: { value: number, setter: (val: number) => void, colorClass: string, disabled: boolean }) => (
+    const InputCell = ({ value, setter, colorClass, disabled }: { value: string, setter: (val: string) => void, colorClass: string, disabled: boolean }) => (
         <input 
-            type="number" 
+            type="text" 
             value={value}
-            onChange={(e) => setter(Number(e.target.value) || 0)}
+            onChange={(e) => {
+                if (/^-?\d*$/.test(e.target.value)) {
+                    setter(e.target.value);
+                }
+            }}
             disabled={disabled}
             autoComplete="off"
             className={`w-12 h-12 md:w-16 md:h-16 bg-black/40 border-2 rounded-md outline-none text-center text-lg md:text-xl font-bold font-mono transition-colors focus:bg-white/10 ${colorClass}`}
         />
     );
 
-    const RenderSubMatrix = ({ scalarA, colorClass }: { scalarA: number, colorClass: string }) => (
+    const b00n = b00 === "-" || b00 === "" ? 0 : Number(b00);
+    const b01n = b01 === "-" || b01 === "" ? 0 : Number(b01);
+    const b10n = b10 === "-" || b10 === "" ? 0 : Number(b10);
+    const b11n = b11 === "-" || b11 === "" ? 0 : Number(b11);
+
+    const RenderSubMatrix = ({ scalarA, colorClass }: { scalarA: string, colorClass: string }) => {
+        const aN = scalarA === "-" || scalarA === "" ? 0 : Number(scalarA);
+        
+        return (
         <div className="grid grid-cols-2 gap-1 p-2 bg-black/20 border border-white/10 rounded overflow-hidden">
             <div className={`flex flex-col items-center justify-center p-2 rounded bg-black/40 text-xs md:text-sm font-bold font-mono ${colorClass}`}>
                 <span className="opacity-50 text-[10px] uppercase mb-1">{scalarA} × {b00}</span>
-                {scalarA * b00}
+                {aN * b00n}
             </div>
             <div className={`flex flex-col items-center justify-center p-2 rounded bg-black/40 text-xs md:text-sm font-bold font-mono ${colorClass}`}>
                 <span className="opacity-50 text-[10px] uppercase mb-1">{scalarA} × {b01}</span>
-                {scalarA * b01}
+                {aN * b01n}
             </div>
             <div className={`flex flex-col items-center justify-center p-2 rounded bg-black/40 text-xs md:text-sm font-bold font-mono ${colorClass}`}>
                 <span className="opacity-50 text-[10px] uppercase mb-1">{scalarA} × {b10}</span>
-                {scalarA * b10}
+                {aN * b10n}
             </div>
             <div className={`flex flex-col items-center justify-center p-2 rounded bg-black/40 text-xs md:text-sm font-bold font-mono ${colorClass}`}>
                 <span className="opacity-50 text-[10px] uppercase mb-1">{scalarA} × {b11}</span>
-                {scalarA * b11}
+                {aN * b11n}
             </div>
         </div>
-    );
+    )};
 
     return (
         <div className="w-full max-w-5xl mx-auto bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl">

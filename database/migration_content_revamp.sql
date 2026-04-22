@@ -32,10 +32,10 @@ BEGIN
 
     -- Insert Modules for Programming
     INSERT INTO public.modules (course_id, title, slug, description, order_index) VALUES
-    (coding_id, 'Python and Modules', 'python-and-modules', 'Basics of Python programming', 1),
-    (coding_id, 'Bits and Gates', 'bits-and-gates', 'Classical bits and logic gates', 2),
-    (coding_id, 'Algorithms', 'algorithms', 'Introduction to algorithms', 3),
-    (coding_id, 'Big-O and efficiency', 'big-o-and-efficiency', 'Analyzing algorithmic complexity', 4);
+    (coding_id, 'Bits and Gates', 'bits-and-gates', 'Classical bits and logic gates', 1),
+    (coding_id, 'Algorithms', 'algorithms', 'Introduction to algorithms', 2),
+    (coding_id, 'Big-O and efficiency', 'big-o-and-efficiency', 'Analyzing algorithmic complexity', 3),
+    (coding_id, 'Python and Modules', 'python-and-modules', 'Basics of Python programming', 4);
 
     -- Insert Modules for Physics
     INSERT INTO public.modules (course_id, title, slug, description, order_index) VALUES

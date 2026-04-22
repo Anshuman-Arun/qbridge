@@ -1,11 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import ReactPlayer from 'react-player';
-import { CheckCircle2, XCircle, Play } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { CheckCircle2, XCircle } from 'lucide-react';
 import { MathText } from './MathText';
 import 'katex/dist/katex.min.css';
-
 
 export interface VideoCheckpoint {
     id: string;
@@ -20,82 +18,193 @@ interface InteractiveVideoProps {
     checkpoints: VideoCheckpoint[];
 }
 
+// Extracts the YouTube video ID from various URL formats
+function getYouTubeId(url: string): string | null {
+    const patterns = [
+        /(?:v=|\/embed\/|\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+        /^([a-zA-Z0-9_-]{11})$/,
+    ];
+    for (const pattern of patterns) {
+        const match = url.match(pattern);
+        if (match) return match[1];
+    }
+    return null;
+}
+
+declare global {
+    interface Window {
+        YT: any;
+        onYouTubeIframeAPIReady: () => void;
+    }
+}
+
 export function InteractiveVideo({ url, checkpoints }: InteractiveVideoProps) {
-    const [playing, setPlaying] = useState(false);
+    const videoId = getYouTubeId(url);
+    const playerRef = useRef<any>(null);
+    const iframeContainerRef = useRef<HTMLDivElement>(null);
+    const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const playerReadyRef = useRef(false);
+
     const [completedCheckpoints, setCompletedCheckpoints] = useState<Set<string>>(new Set());
     const [currentCheckpoint, setCurrentCheckpoint] = useState<VideoCheckpoint | null>(null);
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+    const [isPlayerReady, setIsPlayerReady] = useState(false);
 
-    const playerRef = useRef<any>(null);
+    const completedCheckpointsRef = useRef<Set<string>>(new Set());
+    const currentCheckpointRef = useRef<VideoCheckpoint | null>(null);
 
-    const handleProgress = (state: { playedSeconds: number }) => {
-        if (!playing || currentCheckpoint) return;
+    // Keep refs in sync with state
+    useEffect(() => {
+        completedCheckpointsRef.current = completedCheckpoints;
+    }, [completedCheckpoints]);
 
-        const currentSeconds = state.playedSeconds;
+    useEffect(() => {
+        currentCheckpointRef.current = currentCheckpoint;
+    }, [currentCheckpoint]);
 
-        // Find the first checkpoint that is due to be shown but hasn't been completed.
-        // We check if currentSeconds is greater than or equal to the checkpoint time.
-        // This ensures that even if users fast forward past the checkpoint, it still triggers.
-        const nextCheckpoint = checkpoints.find(
-            (cp) =>
-                !completedCheckpoints.has(cp.id) &&
-                currentSeconds >= cp.timeSeconds
-        );
-
-        if (nextCheckpoint) {
-            // If they skipped past the checkpoint by more than 1 second, snap back to the checkpoint time
-            if (currentSeconds > nextCheckpoint.timeSeconds + 1.0 && playerRef.current) {
-                playerRef.current.currentTime = nextCheckpoint.timeSeconds;
-            }
-
-            // Exit fullscreen so they can see the overlay (if the iframe went fullscreen, it hides our overlay)
-            if (typeof document !== 'undefined' && document.fullscreenElement) {
-                document.exitFullscreen().catch(() => {});
-            }
-
-            setPlaying(false);
-            setCurrentCheckpoint(nextCheckpoint);
-            setSelectedAnswer(null);
-            setIsCorrect(null);
+    const stopPolling = useCallback(() => {
+        if (pollIntervalRef.current) {
+            clearInterval(pollIntervalRef.current);
+            pollIntervalRef.current = null;
         }
-    };
+    }, []);
+
+    const startPolling = useCallback(() => {
+        stopPolling();
+        pollIntervalRef.current = setInterval(() => {
+            if (!playerRef.current || !playerReadyRef.current) return;
+            if (currentCheckpointRef.current) return; // Already showing a checkpoint
+
+            try {
+                const state = playerRef.current.getPlayerState();
+                // YT.PlayerState.PLAYING = 1
+                if (state !== 1) return;
+
+                const currentSeconds: number = playerRef.current.getCurrentTime();
+                const nextCheckpoint = checkpoints.find(
+                    (cp) =>
+                        !completedCheckpointsRef.current.has(cp.id) &&
+                        currentSeconds >= cp.timeSeconds
+                );
+
+                if (nextCheckpoint) {
+                    playerRef.current.pauseVideo();
+
+                    // Exit fullscreen if active
+                    if (typeof document !== 'undefined' && document.fullscreenElement) {
+                        document.exitFullscreen().catch(() => {});
+                    }
+
+                    setCurrentCheckpoint(nextCheckpoint);
+                    setSelectedAnswer(null);
+                    setIsCorrect(null);
+                }
+            } catch {
+                // player not ready yet
+            }
+        }, 500);
+    }, [checkpoints, stopPolling]);
+
+    const initPlayer = useCallback(() => {
+        if (!videoId || !iframeContainerRef.current) return;
+
+        if (playerRef.current) {
+            try { playerRef.current.destroy(); } catch { /* ignore */ }
+            playerRef.current = null;
+            playerReadyRef.current = false;
+        }
+
+        playerRef.current = new window.YT.Player(iframeContainerRef.current, {
+            videoId,
+            width: '100%',
+            height: '100%',
+            playerVars: {
+                modestbranding: 1,
+                rel: 0,
+                origin: typeof window !== 'undefined' ? window.location.origin : '',
+            },
+            events: {
+                onReady: () => {
+                    playerReadyRef.current = true;
+                    setIsPlayerReady(true);
+                    startPolling();
+                },
+                onStateChange: (event: any) => {
+                    // YT.PlayerState.PLAYING = 1
+                    if (event.data === 1) {
+                        startPolling();
+                    }
+                },
+            },
+        });
+    }, [videoId, startPolling]);
+
+    useEffect(() => {
+        if (!videoId) return;
+
+        const loadAPI = () => {
+            if (window.YT && window.YT.Player) {
+                initPlayer();
+            } else {
+                window.onYouTubeIframeAPIReady = initPlayer;
+                if (!document.getElementById('yt-iframe-api')) {
+                    const script = document.createElement('script');
+                    script.id = 'yt-iframe-api';
+                    script.src = 'https://www.youtube.com/iframe_api';
+                    document.head.appendChild(script);
+                }
+            }
+        };
+
+        loadAPI();
+
+        return () => {
+            stopPolling();
+            if (playerRef.current) {
+                try { playerRef.current.destroy(); } catch { /* ignore */ }
+                playerRef.current = null;
+                playerReadyRef.current = false;
+            }
+        };
+    }, [videoId, initPlayer, stopPolling]);
 
     const handleAnswerSelect = (optionValue: string) => {
         if (!currentCheckpoint || isCorrect) return;
 
         setSelectedAnswer(optionValue);
-        
-        // Simple string equivalence or finding letter A,B,C,D
-        // The optionValue here is the text itself.
+
         if (optionValue === currentCheckpoint.correctAnswer) {
             setIsCorrect(true);
             setTimeout(() => {
-                // Let user see they are right for a moment, then resume
                 setCompletedCheckpoints((prev) => new Set(prev).add(currentCheckpoint.id));
                 setCurrentCheckpoint(null);
-                setPlaying(true);
+                setSelectedAnswer(null);
+                setIsCorrect(null);
+                // Resume video
+                try {
+                    playerRef.current?.playVideo();
+                } catch { /* ignore */ }
             }, 1500);
         } else {
             setIsCorrect(false);
         }
     };
 
+    if (!videoId) {
+        return (
+            <div className="w-full aspect-video bg-white/5 rounded-xl flex items-center justify-center border border-white/10">
+                <p className="text-gray-400">Invalid video URL</p>
+            </div>
+        );
+    }
+
     return (
         <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-lg border border-white/10">
-            {React.createElement(ReactPlayer as any, {
-                ref: playerRef,
-                url: url,
-                width: "100%",
-                height: "100%",
-                playing: playing,
-                controls: !currentCheckpoint,
-                onProgress: handleProgress as any,
-                onPlay: () => setPlaying(true),
-                onPause: () => setPlaying(false),
-            })}
+            {/* YouTube IFrame Player Target */}
+            <div ref={iframeContainerRef} className="w-full h-full" />
 
-            {/* Overlay for Checkpoint */}
+            {/* Checkpoint Overlay */}
             {currentCheckpoint && (
                 <div className="absolute inset-0 bg-black/80 backdrop-blur-sm z-10 flex items-center justify-center p-6">
                     <div className="bg-white/10 border border-white/20 p-8 rounded-2xl w-full max-w-2xl animate-in fade-in zoom-in-95 duration-200">
@@ -113,9 +222,8 @@ export function InteractiveVideo({ url, checkpoints }: InteractiveVideoProps) {
                             {currentCheckpoint.options.map((option, idx) => {
                                 const letter = String.fromCharCode(65 + idx);
                                 const isSelected = selectedAnswer === option;
-                                
+
                                 let borderClass = 'border-white/10 bg-white/5 hover:bg-white/10';
-                                
                                 if (isSelected) {
                                     if (isCorrect === true) {
                                         borderClass = 'border-green-500/50 bg-green-500/10 text-green-400';
@@ -133,7 +241,7 @@ export function InteractiveVideo({ url, checkpoints }: InteractiveVideoProps) {
                                         disabled={isCorrect === true}
                                         className={`w-full text-left p-4 rounded-xl border transition-all flex items-center gap-4 ${borderClass}`}
                                     >
-                                        <span className={`w-6 h-6 rounded-full border flex items-center justify-center text-xs font-bold ${isSelected ? 'border-current' : 'border-gray-500 text-gray-500'}`}>
+                                        <span className={`w-6 h-6 rounded-full border flex items-center justify-center text-xs font-bold shrink-0 ${isSelected ? 'border-current' : 'border-gray-500 text-gray-500'}`}>
                                             {letter}
                                         </span>
                                         <MathText text={option} className={isSelected ? '' : 'text-gray-300'} />
@@ -141,7 +249,7 @@ export function InteractiveVideo({ url, checkpoints }: InteractiveVideoProps) {
                                 );
                             })}
                         </div>
-                        
+
                         {isCorrect === false && (
                             <div className="pl-14 mt-4 flex items-center gap-2 text-red-400 text-sm">
                                 <XCircle className="w-4 h-4" />
@@ -154,15 +262,6 @@ export function InteractiveVideo({ url, checkpoints }: InteractiveVideoProps) {
                                 Correct! Resuming video...
                             </div>
                         )}
-                    </div>
-                </div>
-            )}
-            
-            {/* Start Overlay if paused at very beginning without playing yet */}
-            {!playing && !currentCheckpoint && playerRef.current?.currentTime === 0 && (
-                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-brand-purple/80 p-4 rounded-full text-white backdrop-blur-md shadow-2xl">
-                        <Play className="w-10 h-10 ml-1" />
                     </div>
                 </div>
             )}

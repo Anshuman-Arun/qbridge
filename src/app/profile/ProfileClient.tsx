@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { BookOpen, CheckCircle2, Star, Clock, TrendingUp, User } from 'lucide-react';
+import { BookOpen, CheckCircle2, Star, Clock, TrendingUp, Atom, Zap } from 'lucide-react';
 
 interface CourseProgressItem {
     id: string;
@@ -40,6 +40,7 @@ interface ProfileClientProps {
     tags: TagItem[];
     recentAttempts: AttemptItem[];
     historyAttempts: AttemptItem[];
+    enrolledAdvanced: boolean;
 }
 
 function GradeRing({ percent }: { percent: number }) {
@@ -66,6 +67,7 @@ export function ProfileClient({
     userEmail, fullName, avatarUrl, overallGrade,
     latestAttemptsCount, totalAttemptsCount,
     courseProgress, tags, recentAttempts, historyAttempts,
+    enrolledAdvanced,
 }: ProfileClientProps) {
     const itemVariants = {
         hidden: { opacity: 0, y: 20 },
@@ -123,7 +125,7 @@ export function ProfileClient({
                         {overallGrade !== null ? (
                             <div className="relative flex items-center justify-center">
                                 <GradeRing percent={overallGrade} />
-                                <span className="absolute text-3xl font-black text-white rotate-90" style={{ transform: 'none' }}>
+                                <span className="absolute text-3xl font-black text-white">
                                     {overallGrade}%
                                 </span>
                             </div>
@@ -170,6 +172,35 @@ export function ProfileClient({
                                         </div>
                                     );
                                 })}
+
+                                {/* Advanced QC enrollment row */}
+                                <div className="space-y-1.5 pt-2 border-t border-white/5">
+                                    <div className="flex justify-between items-center text-sm">
+                                        <div className="flex items-center gap-2">
+                                            <Atom className="w-3.5 h-3.5 text-brand-purple shrink-0" />
+                                            <span className="text-gray-300 font-medium">Advanced Quantum Computing</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            {enrolledAdvanced ? (
+                                                <span className="flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 font-semibold">
+                                                    <Zap className="w-3 h-3" /> Enrolled
+                                                </span>
+                                            ) : (
+                                                <span className="text-xs px-2.5 py-0.5 rounded-full bg-brand-purple/10 border border-brand-purple/20 text-brand-purple font-semibold">
+                                                    Coming Soon
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+                                        <div className="h-full w-0 rounded-full bg-gradient-to-r from-brand-purple to-brand-cyan opacity-30" />
+                                    </div>
+                                    <p className="text-xs text-gray-600">
+                                        {enrolledAdvanced
+                                            ? "You'll be notified when this course launches."
+                                            : 'Head to the Learn page to enroll.'}
+                                    </p>
+                                </div>
                             </div>
                         )}
                     </motion.div>
