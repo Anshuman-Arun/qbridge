@@ -8,9 +8,10 @@ const config: OpenNextConfig = {
       proxyExternalRequest: "fetch",
       incrementalCache: "dummy",
       tagCache: "dummy",
-      queue: "dummy",
+      queue: "direct",
     },
   },
+
   middleware: {
     external: true,
     override: {
@@ -19,9 +20,11 @@ const config: OpenNextConfig = {
       proxyExternalRequest: "fetch",
       incrementalCache: "dummy",
       tagCache: "dummy",
-      queue: "dummy",
+      queue: "direct",
     },
   },
+
+  edgeExternals: ["node:crypto"],
 };
 
 export default config;
