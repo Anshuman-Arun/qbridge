@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Monitor, Calculator, Zap, X, Check } from "lucide-react";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
-
+export const dynamic = 'force-dynamic'
 interface BulletSection {
     intro: string;
     bullets: string[];
@@ -116,14 +116,14 @@ export default function ProgramsPage() {
             }
         };
         checkEnrollments();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const toggleEnrollment = async (slug: string) => {
         if (enrolling === slug) return;
         setEnrolling(slug);
         const { data: { user } } = await supabase.auth.getUser();
-        
+
         if (user) {
             if (enrolled[slug]) {
                 // Unenroll
@@ -132,7 +132,7 @@ export default function ProgramsPage() {
                     .delete()
                     .eq("user_id", user.id)
                     .eq("course_slug", slug);
-                
+
                 if (!error) {
                     setEnrolled((prev) => {
                         const next = { ...prev };
@@ -146,7 +146,7 @@ export default function ProgramsPage() {
                     { user_id: user.id, course_slug: slug },
                     { onConflict: "user_id,course_slug" }
                 );
-                
+
                 if (!error) {
                     setEnrolled((prev) => ({ ...prev, [slug]: true }));
                 }
@@ -218,11 +218,10 @@ export default function ProgramsPage() {
                                         onClick={(e) => { e.stopPropagation(); toggleEnrollment(program.slug); }}
                                         disabled={enrolling === program.slug}
                                         whileTap={{ scale: 0.95 }}
-                                        className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all z-20 ${
-                                            enrolled[program.slug]
-                                                ? "bg-green-500/15 border border-green-500/30 text-green-400 hover:bg-green-500/20"
-                                                : "bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10 hover:text-white hover:border-brand-cyan/30"
-                                        }`}
+                                        className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all z-20 ${enrolled[program.slug]
+                                            ? "bg-green-500/15 border border-green-500/30 text-green-400 hover:bg-green-500/20"
+                                            : "bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10 hover:text-white hover:border-brand-cyan/30"
+                                            }`}
                                     >
                                         {enrolled[program.slug] ? (
                                             <span className="flex items-center gap-1.5"><Check className="w-3 h-3" /> Enrolled</span>
@@ -310,11 +309,10 @@ export default function ProgramsPage() {
                                         onClick={(e) => { e.stopPropagation(); toggleEnrollment(selectedProgram.slug); }}
                                         disabled={enrolling === selectedProgram.slug}
                                         whileTap={{ scale: 0.97 }}
-                                        className={`w-full py-4 rounded-2xl font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
-                                            enrolled[selectedProgram.slug]
-                                                ? "bg-green-500/20 border border-green-500/40 text-green-400 hover:bg-green-500/25"
-                                                : "bg-gradient-to-r from-brand-purple to-brand-cyan text-white shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)]"
-                                        }`}
+                                        className={`w-full py-4 rounded-2xl font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${enrolled[selectedProgram.slug]
+                                            ? "bg-green-500/20 border border-green-500/40 text-green-400 hover:bg-green-500/25"
+                                            : "bg-gradient-to-r from-brand-purple to-brand-cyan text-white shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)]"
+                                            }`}
                                     >
                                         <AnimatePresence mode="wait">
                                             {enrolled[selectedProgram.slug] ? (
